@@ -27,6 +27,7 @@ difference(){
 translate([29.49,0,0])
     cube([12.38,10.06,4],center=true);
 
+//Move cosine of 30 degrees times radius of 37
 translate([-18.5,32,0])
     rotate(-60, [0,0,1]){
         cube([12.38,10.06,4],center=true);
