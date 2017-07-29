@@ -52,73 +52,31 @@ difference(){
 //         Need notch on ring side
 
 //First tab +x
-translate([ring_edge-tab_x,tab_y/2 * -1,inner_ring_edge])
-        DrawTab(0,0,0,0);
+    DrawTab(ring_edge-tab_x,tab_y/2 * -1,inner_ring_edge,0,0,0,0);
 
 //Second tab -x +y
-//Find point for right center of cube
-//    x = cos(60) * r * -1
-//    y = sin(60) * r
-//Rotate 120 on that point
-//Move point length of tab to -x
-//Move point width of tab /2 to -y
-//Draw new tab
-    start_x2 = cos(60)*ring_edge*-1;
-    start_y2 = sin(60)*37;
-    start_z2 = inner_ring_edge;
-    rotate_tab2 = 1;
+    DrawTab(cos(60)*ring_edge*-1,sin(60)*37,
+inner_ring_edge,tab_x*-1,tab_y/2*-1,0,1);
+    
+//Third tab -x -y
+    DrawTab(cos(60)*ring_edge*-1,sin(60)*ring_edge*-1,
+    inner_ring_edge,tab_x*-1,tab_y/2*-1,0,2);
 
-//translate([start_x2,start_y2,start_z2])
-//    rotate(120*rotate_tab2){
-//        translate([-12.38,-5.03,0])
-//            difference(){
-//                cube([tab_x,tab_y,tab_z],center=false);
-//                translate([tab_hole_x,tab_hole_y,0])
-//                cylinder(h=tab_z, r=1.5,center = false);
-//            }
-//    }
-
-translate([start_x2+10.5,start_y2-8.4,start_z2])
-    rotate(120*rotate_tab2){
-        DrawTab(-12.38,-5.03,1);
-    }
-
-module DrawTab(t_x,t_y,t_z){
-        translate(t_x,t_y,t_z)
+module DrawTab(s_x,s_y,s_z,t_x,t_y,t_z,r){
+    //s_x - starting x point for cube before rotation and re-orientation
+    //s_y - starting y point for cube before rotation and re-orientation
+    //s_z - starting z point for cube before rotation and re-orientation
+    //t_x - after rotation translated starting x point for cube
+    //t_y - after rotation translated starting y point for cube
+    //t_z - after rotation translated starting z point for cube
+    //r   - rotation multiplier
+    translate([s_x,s_y,s_z])
+    rotate(120*r){
+        translate([t_x,t_y,t_z])
             difference(){
                 cube([tab_x,tab_y,tab_z],center=false);
                 translate([tab_hole_x,tab_hole_y,0])
-                cylinder(h=tab_z, r=1.5,center = false);
-            }    
+                    cylinder(h=tab_z, r=1.5,center = false);
+            }
+        }    
 }
-
-//Third tab -x -y
-//Find point for right center of cube
-//    x = cos(60) * r * -1
-//    y = sin(60) * r * -1
-//Rotate 240 on that point
-//Move point length of tab to -x
-//Move point width of tab /2 to -y
-//Draw new tab
-
-translate([cos(60)*37*-1,sin(60)*37*-1,2.57])
-//translate([-13.02,-34,2.57])
-//    rotate(57, [0,0,1]){
-    rotate(240){
-        translate([-12.38,-5.03,0])
-        difference(){
-            cube([12.38,10.06,3.55],center=false);
-            translate([4.67,5.03,0])
-            cylinder(h=3.55, r=1.5,center = false);
-        }
-    }
-
-//Rotates its child 'a' degrees about the axis of the coordinate system or around an arbitrary axis. The argument names are optional if the arguments are given in the same order as specified.
-
-//Usage:
-//rotate(a = deg_a, v = [x, y, z]) { ... }  
-// or
-//rotate(deg_a, [x, y, z]) { ... }
-//rotate(a = [deg_x, deg_y, deg_z]) { ... }
-//rotate([deg_x, deg_y, deg_z]) { ... }
-
