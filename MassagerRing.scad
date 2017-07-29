@@ -1,3 +1,13 @@
+// Massager head retention ring
+// First 3D print issues
+//     Ring
+//         xNot enough angles in ring edges
+//     Tabs
+//         xDo not align with outside of 37mm ring
+//         xPenetrate too far into center of ring
+//         xScrew holes too large
+//         xNeed notch on ring side
+
 //Cylinder
 //Outer dimension 74mm
 //Ring edge = 37mm
@@ -41,26 +51,25 @@ difference(){
         cylinder(h=4,r=35.5, $fa=6, center=false);
 }
 
-// Massager head retention ring
-// First 3D print issues
-//     Ring
-//         Not enough angles in ring edges
-//     Tabs
-//         Do not align with outside of 37mm ring
-//         Penetrate too far into center of ring
-//         Screw holes too large
-//         Need notch on ring side
+difference(){
+    union(){
+        //First tab +x
+            DrawTab(ring_edge-tab_x,tab_y/2 * -1,inner_ring_edge,0,0,0,0);
 
-//First tab +x
-    DrawTab(ring_edge-tab_x,tab_y/2 * -1,inner_ring_edge,0,0,0,0);
-
-//Second tab -x +y
-    DrawTab(cos(60)*ring_edge*-1,sin(60)*37,
-inner_ring_edge,tab_x*-1,tab_y/2*-1,0,1);
+        //Second tab -x +y
+            DrawTab(cos(60)*ring_edge*-1,sin(60)*37,
+        inner_ring_edge,tab_x*-1,tab_y/2*-1,0,1);
     
-//Third tab -x -y
-    DrawTab(cos(60)*ring_edge*-1,sin(60)*ring_edge*-1,
-    inner_ring_edge,tab_x*-1,tab_y/2*-1,0,2);
+        //Third tab -x -y
+            DrawTab(cos(60)*ring_edge*-1,sin(60)*ring_edge*-1,
+            inner_ring_edge,tab_x*-1,tab_y/2*-1,0,2);
+    }
+    translate([0,0,5.11])
+        difference(){
+            cylinder(h=6, r=35.5, $fa=6, center=false);
+            cylinder(h=6, r=32.085, $fa=6, center=false);
+        }
+}
 
 module DrawTab(s_x,s_y,s_z,t_x,t_y,t_z,r){
     //s_x - starting x point for cube before rotation and re-orientation
